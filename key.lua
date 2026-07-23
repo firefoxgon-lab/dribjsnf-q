@@ -225,8 +225,7 @@ function loadMainScript()
     print("🔄 Attempting to load main script...")
     
     local success, result = pcall(function()
-        -- URL to your OBFUSCATED main script
-        local url = "https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/main_obfuscated.lua"
+        local url = "https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/automineUI.lua"
         print("📥 Fetching script from: " .. url)
         
         local mainScript = game:HttpGet(url)
