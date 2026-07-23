@@ -1,12 +1,9 @@
 --[[
     Auto Mineral Route Walker - KEY SYSTEM
     This file handles key verification and loads the obfuscated main script
-    DO NOT OBFUSCATE THIS FILE
+
 ]]
 
--- ============================================
--- KEY SYSTEM WITH ENCODED KEY
--- ============================================
 
 local keySystem = {
     verified = false,
@@ -15,7 +12,6 @@ local keySystem = {
     gui = nil
 }
 
--- Decode the key using XOR encryption
 local function decodeKey()
     local encoded = {107, 63, 52, 51, 55, 35, 63, 49, 42, 55, 63, 46}
     local decoded = {}
@@ -221,10 +217,8 @@ end
 
 function loadMainScript()
     local success, err = pcall(function()
-        -- URL to your OBFUSCATED main script
-        -- This file should ONLY contain your main script, NO key system
-        local mainScript = game:HttpGet("https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/main_obfuscated.lua")
-        loadstring(mainScript)()
+        local mainScript = game:HttpGet("https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/automineUI.lua")
+        load(mainScript, "mainScript", "t", _ENV)()
     end)
     
     if not success then
