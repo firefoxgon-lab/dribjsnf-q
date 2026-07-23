@@ -1,9 +1,7 @@
 --[[
     Auto Mineral Route Walker - KEY SYSTEM
     This file handles key verification and loads the obfuscated main script
-
 ]]
-
 
 local keySystem = {
     verified = false,
@@ -12,6 +10,7 @@ local keySystem = {
     gui = nil
 }
 
+-- Decode the key using XOR encryption
 local function decodeKey()
     local encoded = {107, 63, 52, 51, 55, 35, 63, 49, 42, 55, 63, 46}
     local decoded = {}
@@ -218,7 +217,7 @@ end
 function loadMainScript()
     local success, err = pcall(function()
         local mainScript = game:HttpGet("https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/automineUI.lua")
-        load(mainScript, "mainScript", "t", _ENV)()
+        loadstring(mainScript)()
     end)
     
     if not success then
