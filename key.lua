@@ -1,7 +1,12 @@
 --[[
     Auto Mineral Route Walker - KEY SYSTEM
     This file handles key verification and loads the obfuscated main script
+    DO NOT OBFUSCATE THIS FILE
 ]]
+
+-- ============================================
+-- KEY SYSTEM WITH ENCODED KEY
+-- ============================================
 
 local keySystem = {
     verified = false,
@@ -12,6 +17,8 @@ local keySystem = {
 
 -- Decode the key using XOR encryption
 local function decodeKey()
+    -- Encoded key (XOR with 0x5A)
+    -- To encode a new key: string.char(bit32.bxor(string.byte(char), 0x5A))
     local encoded = {107, 63, 52, 51, 55, 35, 63, 49, 42, 55, 63, 46}
     local decoded = {}
     
@@ -215,13 +222,36 @@ end
 -- ============================================
 
 function loadMainScript()
-    local success, err = pcall(function()
-        local mainScript = game:HttpGet("https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/automineUI.lua")
-        loadstring(mainScript)()
+    print("🔄 Attempting to load main script...")
+    
+    local success, result = pcall(function()
+        -- URL to your OBFUSCATED main script
+        local url = "https://raw.githubusercontent.com/firefoxgon-lab/dribjsnf-q/refs/heads/main/main_obfuscated.lua"
+        print("📥 Fetching script from: " .. url)
+        
+        local mainScript = game:HttpGet(url)
+        
+        if mainScript and #mainScript > 0 then
+            print("✅ Script fetched successfully! Size: " .. #mainScript .. " bytes")
+            
+            -- Execute the script
+            local func, err = loadstring(mainScript)
+            if func then
+                print("✅ Script compiled successfully! Running...")
+                func()
+                print("✅ Script executed successfully!")
+            else
+                print("❌ Failed to compile script: " .. tostring(err))
+                error("Compilation failed: " .. tostring(err))
+            end
+        else
+            print("❌ Script is empty or nil!")
+            error("Script is empty!")
+        end
     end)
     
     if not success then
-        print("❌ Failed to load main script: " .. tostring(err))
+        print("❌ Failed to load main script: " .. tostring(result))
         
         -- Show error message to user
         local player = game:GetService("Players").LocalPlayer
@@ -230,8 +260,8 @@ function loadMainScript()
         errorGui.Parent = player:WaitForChild("PlayerGui")
         
         local errorFrame = Instance.new("Frame")
-        errorFrame.Size = UDim2.new(0, 400, 0, 150)
-        errorFrame.Position = UDim2.new(0.5, -200, 0.5, -75)
+        errorFrame.Size = UDim2.new(0, 400, 0, 180)
+        errorFrame.Position = UDim2.new(0.5, -200, 0.5, -90)
         errorFrame.BackgroundColor3 = Color3.fromRGB(40, 20, 20)
         errorFrame.BorderSizePixel = 3
         errorFrame.BorderColor3 = Color3.fromRGB(255, 50, 50)
@@ -248,19 +278,19 @@ function loadMainScript()
         errorTitle.Parent = errorFrame
         
         local errorMsg = Instance.new("TextLabel")
-        errorMsg.Size = UDim2.new(1, -20, 0, 50)
+        errorMsg.Size = UDim2.new(1, -20, 0, 70)
         errorMsg.Position = UDim2.new(0, 10, 0, 65)
         errorMsg.BackgroundTransparency = 1
-        errorMsg.Text = "Failed to load the main script.\nPlease try again later or contact support."
+        errorMsg.Text = "Failed to load the main script.\nError: " .. tostring(result):sub(1, 100) .. "\n\nPlease try again later or contact support."
         errorMsg.TextColor3 = Color3.fromRGB(200, 200, 200)
-        errorMsg.TextSize = 14
+        errorMsg.TextSize = 13
         errorMsg.Font = Enum.Font.Gotham
         errorMsg.TextWrapped = true
         errorMsg.Parent = errorFrame
         
         local closeButton = Instance.new("TextButton")
         closeButton.Size = UDim2.new(0.3, 0, 0, 35)
-        closeButton.Position = UDim2.new(0.35, 0, 0, 105)
+        closeButton.Position = UDim2.new(0.35, 0, 0, 140)
         closeButton.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
         closeButton.BorderColor3 = Color3.fromRGB(80, 80, 100)
         closeButton.Text = "Close"
@@ -279,5 +309,6 @@ end
 -- STARTUP - Show key GUI first
 -- ============================================
 
+print("🔑 Key System loading...")
 task.wait(0.5)
 showKeyGUI()
